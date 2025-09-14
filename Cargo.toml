@@ -3,6 +3,8 @@ name = "kube-eks-config"
 version = "0.1.0"
 edition = "2024"
 description = "Helper for creating kube::Config and kube::Client for EKS cluster"
+license = "Apache-2.0"
+repository = "https://github.com/imp/kube-eks-config-rs"
 
 
 [dependencies]
