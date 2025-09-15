@@ -69,6 +69,85 @@ impl ToKubeConfig for eks::types::Cluster {
     }
 }
 
+pub trait IntoKubeconfig {
+    fn into_kubeconfig(self) -> Result<kubeconfig::Kubeconfig, kubeconfig::KubeconfigError>;
+}
+
+impl IntoKubeconfig for eks::types::Cluster {
+    fn into_kubeconfig(self) -> Result<kubeconfig::Kubeconfig, kubeconfig::KubeconfigError> {
+        let eks::types::Cluster {
+            name,
+            endpoint,
+            certificate_authority,
+            // arn,
+            // created_at,
+            // version,
+            // role_arn,
+            // resources_vpc_config,
+            // kubernetes_network_config,
+            // logging,
+            // identity,
+            // status,
+            // client_request_token,
+            // platform_version,
+            // tags,
+            // encryption_config,
+            // connector_config,
+            // id,
+            // health,
+            // outpost_config,
+            // access_config,
+            // upgrade_policy,
+            // zonal_shift_config,
+            // remote_network_config,
+            // compute_config,
+            // storage_config,
+            // deletion_protection,
+            ..
+        } = self;
+        let name = name.unwrap_or_else(|| "eks-cluster".to_string());
+        let certificate_authority_data = certificate_authority.and_then(|cert| cert.data);
+
+        let cluster = kubeconfig::Cluster {
+            server: endpoint,
+            insecure_skip_tls_verify: None,
+            certificate_authority: None,
+            certificate_authority_data,
+            proxy_url: None,
+            disable_compression: None,
+            tls_server_name: None,
+            extensions: None,
+        };
+
+        let named_cluster = kubeconfig::NamedCluster {
+            name: name.clone(),
+            cluster: Some(cluster),
+        };
+
+        let context = kubeconfig::Context {
+            cluster: name.clone(),
+            user: None,
+            namespace: None,
+            extensions: None,
+        };
+
+        let named_context = kubeconfig::NamedContext {
+            name: name.clone(),
+            context: Some(context),
+        };
+
+        let config = kubeconfig::Kubeconfig {
+            clusters: vec![named_cluster],
+            contexts: vec![named_context],
+            current_context: Some(name),
+            // auth_infos: vec![],
+            ..kubeconfig::Kubeconfig::default()
+        };
+
+        Ok(config)
+    }
+}
+
 fn cluster_not_found(cluster: &str) -> eks::Error {
     let exception = eks::types::error::NotFoundException::builder()
         .message(format!("EKS cluster {cluster} not found"))
