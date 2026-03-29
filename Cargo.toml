@@ -10,21 +10,15 @@ repository = "https://github.com/imp/kube-eks-config-rs"
 [dependencies]
 aws-config = { version = "1.8", features = ["behavior-version-latest"] }
 aws-sdk-eks = "1.127"
-k8s-openapi = { version = "0.26", features = ["latest"] }
-kube-client = "2.0"
+k8s-openapi = { version = "0.27", features = ["latest"] }
+kube-client = "3.1"
 
 
 [dev-dependencies]
-kube = { version = "2.0", features = [
+kube = { version = "3.1", features = [
     "client",
     "rustls-tls",
     "aws-lc-rs",
     # "ring",
 ] }
-# kube = { version = "2.0", default-features = false, features = [
-#     "client",
-#     "rustls-tls",
-#     "aws-lc-rs",
-#     # "ring",
-# ] }
 tokio = { version = "1.47", features = ["full"] }
