@@ -1,3 +1,8 @@
+//! Baseline example: list pods using the kubeconfig already present on disk
+//! (`~/.kube/config` or `KUBECONFIG` env var).  This does **not** use
+//! `kube-eks-config`; it is here as a comparison point to show what the crate
+//! saves you from doing manually.
+
 use k8s_openapi::api::core::v1 as corev1;
 use kube::api;
 use kube_client::ResourceExt;
