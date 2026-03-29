@@ -26,8 +26,8 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-kube-eks-config = "0.1"
-kube = { version = "3", features = ["client", "rustls-tls"] }
+kube-eks-config = "3.0"
+kube = { version = "3.0", features = ["client", "rustls-tls"] }
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -133,6 +133,14 @@ Run with:
 ```sh
 cargo run --example getpods-eks -- <cluster-name>
 ```
+
+## Versioning
+
+The version of `kube-eks-config` tracks the **major version** of
+[`kube`](https://crates.io/crates/kube). A `kube-eks-config 3.x.y` release is
+compatible with any `kube 3.*` release, following standard semver rules.
+When `kube` publishes a new major version, `kube-eks-config` will bump its
+major version to match.
 
 ## License
 
